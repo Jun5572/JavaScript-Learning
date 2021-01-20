@@ -1,0 +1,17 @@
+$cWhite: white;
+$cTwitter: #1DA1F2;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.btn {
+  &__follow {
+    &.following {
+      background-color: $cTwitter;
+      color: $cWhite;
+    }
+  }
+}
