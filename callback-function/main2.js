@@ -1,44 +1,91 @@
-const btn__follow = document.querySelector('.btn__follow');
-const btn__tweet = document.querySelector('.btn__tweet');
-let tweetText = document.querySelector('#tweet-content');
-
+let btn__follow = document.querySelector(".btn__follow");
+let btn__tweet = document.querySelector(".btn__tweet");
+let tweet_index = document.querySelector("#index");
+let tweets = [];
+let maxTweetLength = 10;
 
 btn__follow.addEventListener("click", function () {
-  confirmed(followable);
+  if (isFollowing()) {
+    confirmed(unfollow);
+  } else {
+    confirmed(follow);
+  }
 });
 
 btn__tweet.addEventListener("click", function () {
-  confirmed(cancelTweet);
-  isTweetable(tweetText);
+  let elm_input = document.querySelector("#tweet-content");
+  let tweet_text = elm_input.value;
+  let tweet_status = checkTweet(tweet_text);
+  
+  if (tweet_status.length && !tweet_status.blank) {
+    confirmed(postTweet, tweet_text);
+    clearForm(elm_input);
+  } else {
+    window.alert(`${maxTweetLength}文字以下で入力してください`);
+  }
+
+  if (tweet_status.blank) {
+    window.alert('入力してください');
+  }
 });
 
-
-function isTweetable(text) {
-  console.log(text.value.length);
-}
-
-function followable() {
-  if (btn__follow.classList.contains('following')) {
-    //followingがあったら削除。InnerText変更。
-    btn__follow.classList.remove("following");
-    btn__follow.innerText = "フォローする";
-    console.log("フォローを外しました");
-  } else {
-    //followingがなかったら追加。InnerText変更。
-    btn__follow.classList.add('following');
-    btn__follow.innerText = "フォロー中";
-    console.log("フォローしました");
+//tweet可能か判定する関数
+function checkTweet(text) {
+  let tweetLength = text.length;
+  let result = {
+   length: tweetLength < maxTweetLength ? true : false,
+   blank: tweetLength === 0 ? true : false
   }
+  return result;
 }
 
-function cancelTweet() {
-  console.log("ツイートをキャンセルしました");
+function postTweet(text) {
+  let elm_list = document.createElement("li");
+  elm_list.classList.add("body");
+  elm_list.innerHTML = `<p>${text}</p>`;
+  tweet_index.appendChild(elm_list);
 }
 
-function confirmed(fn) {
+//フォローしているかをチェックする関数。今回はクラスを持っているかで判定。
+//本来はデータベースにレコードが存在しているかを確認して判定？
+//戻り値：Boolean
+function isFollowing() {
+  let result = checkClass(btn__follow, "following");
+  return result;
+}
+
+function follow() {
+  btn__follow.classList.add("following");
+  btn__follow.innerText = "フォロー中";
+  console.log("フォローしました");
+}
+
+function unfollow() {
+  btn__follow.classList.remove("following");
+  btn__follow.innerText = "フォローする";
+  console.log("フォローを外しました");
+}
+
+function confirmed(fn, arg) {
   if (window.confirm("実行しますか？")) {
-    fn();
+    fn(arg);
   } else {
     alert("キャンセルしました");
   }
 }
+
+//引数に指定したクラスを持っているかの判定を行う関数
+//戻り値 Boolean
+function checkClass(element, strClassName) {
+  return element.classList.contains(strClassName);
+}
+
+function clearForm(elm) {
+  elm.value = "";
+}
+
+function isBlank(elm) {
+  return elm.value = '' ? true : false;
+}
+
+
