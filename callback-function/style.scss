@@ -1,12 +1,17 @@
 $cWhite: white;
-$cTweetBg: #efefef;
 $cBlack: black;
+$cGray: gray;
+
+$cTweetBg: #efefef;
 $cTwitter: #1da1f2;
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+body {
+  font-size: 18px;
 }
 button {
   background-color: transparent;
@@ -25,13 +30,24 @@ ul {
 }
 
 .global-container {
-  width: 600px;
+  width: 80%;
   padding: 10px 30px;
   margin: 100px auto;
   text-align: center;
 
   & .input-container {
     margin-bottom: 50px;
+    height: 50px;
+
+    & input {
+      height: 100%;
+      vertical-align: middle;
+      outline: none;
+      padding: 5px;
+      border: solid 2px $cGray;
+      border-radius: 5px;
+      font-size: 20px;
+    }
   }
 
   & .tweet-container {
@@ -43,6 +59,7 @@ ul {
       & .body {
         margin: 0.5em auto;
         padding: 1em;
+        border-radius: 10px;
         font-size: 20px;
         text-align: left;
         background-color: $cTweetBg;
@@ -56,6 +73,11 @@ ul {
   background-color: #f1f1f1;
   border: solid 2px #b8b8b8;
 
+  &.btn {
+    &__tweet {
+      height: 100%;
+    }
+  }
   &__follow {
     &.following {
       background-color: $cTwitter;
