@@ -3,53 +3,27 @@ let btn__tweet = document.querySelector(".btn__tweet");
 let tweet_index = document.querySelector("#index");
 let elm_input = document.querySelector("#tweet-content");
 let maxTweetLength = 10;
+const overLengthText = `${maxTweetLength}文字以下で入力してください`;
+const blankText = '入力してください';
 
 btn__follow.addEventListener("click", function () {
-  if (isFollowing()) {
-    confirmed(unfollow);
+  if (isFollowing() ? confirmed(unfollow) : follow());
+});
+
+btn__tweet.addEventListener("click", function () {
+  let tweet_text = getVal(elm_input);
+  let tweet_status = checkTweet(tweet_text);
+
+  if (tweet_status.length && !tweet_status.blank) {
+    confirmed(postTweet, tweet_text);
+    clearForm(elm_input);
   } else {
-    follow();
+    appendAlert(overLengthText);
+  }
+
+  if (tweet_status.blank) {
   }
 });
-
-// btn__tweet.addEventListener("click", function () {
-//   let elm_input = document.querySelector("#tweet-content");
-//   let tweet_text = elm_input.value;
-//   let tweet_status = checkTweet(tweet_text);
-
-//   if (tweet_status.length && !tweet_status.blank) {
-//     confirmed(postTweet, tweet_text);
-//     clearForm(elm_input);
-//   } else {
-//     window.alert(`${maxTweetLength}文字以下で入力してください`);
-//   }
-
-//   if (tweet_status.blank) {
-//     window.alert('入力してください');
-//   }
-// });
-let tweet_text = elm_input.value;
-let tweet_status = checkTweet(tweet_text);
-
-btn__tweet.addEventListener("click", function(e) {
-  // getVal(e);
-
-  console.log(e);
-  // if (tweet_status.length && !tweet_status.blank) {
-  //   confirmed(postTweet, tweet_text);
-  //   clearForm(elm_input);
-  // } else {
-  //   window.alert(`${maxTweetLength}文字以下で入力してください`);
-  // }
-
-  // if (tweet_status.blank) {
-  //   window.alert("入力してください");
-  // }
-});
-
-function getVal(elm) {
-  return elm.value;
-}
 
 
 function isBlank(elm) {
@@ -58,6 +32,10 @@ function isBlank(elm) {
 
 function isLengthOver(text, maxLimit) {
   return text < maxLimit ? true : false;
+}
+
+function appendAlert(text) {
+  window.alert(text);
 }
 
 //tweet可能か判定する関数
@@ -71,10 +49,14 @@ function checkTweet(text) {
 }
 
 function postTweet(text) {
-  let elm_list = document.createElement("li");
-  elm_list.classList.add("body");
-  elm_list.innerHTML = `<p>${text}</p>`;
-  tweet_index.aïppendChild(elm_list);
+  let elm_li = document.createElement('li');
+  let elm_span = document.createElement('span');
+  let elm_p = document.createElement('p');
+  elm_li.classList.add("body");
+  elm_p.innerText = text;
+  tweet_index.appendChild(elm_li);
+  elm_li.appendChild(elm_p);
+  // elm_li.appendChild(elm_span);
 }
 
 //フォローしているかをチェックする関数。今回はクラスを持っているかで判定。
@@ -117,4 +99,6 @@ function clearForm(elm) {
   elm.value = "";
 }
 
-
+function getVal(elm) {
+  return elm.value;
+}
