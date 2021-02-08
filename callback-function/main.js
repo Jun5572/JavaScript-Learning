@@ -1,6 +1,6 @@
 function hello(callback, lastname) {
-  console.log(callback, 'lastname=', lastname);
-  console.log('hello ' + callback(lastname));
+  // console.log(callback, 'lastname=', lastname);
+  // console.log('hello ' + callback(lastname));
 }
 
 function getName() {
@@ -30,6 +30,7 @@ hello((name) => {
 
 
 function doSomething(a, b, callback) {
+  console.log(a, b, callback);
   const result = callback(a, b);
   console.log(result);
 }
